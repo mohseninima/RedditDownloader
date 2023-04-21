@@ -2,6 +2,7 @@
 from sources.frontpage_posts_source import FrontpagePostsSource
 from sources.multireddit_source import MultiRedditSource
 from sources.my_upvoted_saved_source import UpvotedSaved
+from sources.my_hidden_source import Hidden
 from sources.subreddit_posts_source import SubredditPostsSource
 from sources.user_posts_source import UserPostsSource
 from sources.user_upvoted_saved_source import UserUpvotedSaved
@@ -18,6 +19,7 @@ def all_sources():
 		FrontpagePostsSource(),
 		MultiRedditSource(),
 		UpvotedSaved(),
+		Hidden(),
 		SubredditPostsSource(),
 		UserPostsSource(),
 		UserUpvotedSaved(),
