@@ -124,6 +124,34 @@ def user_liked_saved(username, scan_upvoted=True, scan_saved=True, scan_sub=None
 	except prawcore.Forbidden:
 		stringutil.error('Cannot load Upvoted/Saved Posts from the User "%s", because they are private!' % username)
 
+		
+@check_login
+def my_hidden():
+	""" Get the upvoted/saved posts & comments for the signed-in user. """
+	if not _user:
+		raise ConnectionError('User not signed in!')
+	yield from user_liked_saved(_user.name)
+
+
+@check_login
+def user_hidden(username, scan_upvoted=True, scan_saved=True, scan_sub=None):
+	""" Gets all the upvoted/saved comments and/or submissions for the given User. Allows filtering by Subreddit. """
+	params = {'sr': scan_sub} if scan_sub else None
+	try:
+		if _user.name.lower() == username.lower():
+			redditor = _user
+		else:
+			redditor = _reddit.redditor(username)
+		if scan_saved:
+			for saved in redditor.hidden(limit=None, params=params):
+				re = RedditElement(saved)
+				yield re
+
+	except prawcore.exceptions.NotFound:
+		stringutil.error('Cannot locate comments or submissions for nonexistent user: %s' % username)
+	except prawcore.Forbidden:
+		stringutil.error('Cannot load Upvoted/Saved Posts from the User "%s", because they are private!' % username)
+		
 
 @check_login
 def subreddit_posts(sub, order_by='new', limit=None, time='all'):
