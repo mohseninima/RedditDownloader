@@ -130,7 +130,7 @@ def my_hidden():
 	""" Get the upvoted/saved posts & comments for the signed-in user. """
 	if not _user:
 		raise ConnectionError('User not signed in!')
-	yield from user_liked_saved(_user.name)
+	yield from user_hidden(_user.name)
 
 
 @check_login
